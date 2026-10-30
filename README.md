@@ -7,8 +7,6 @@ No install. No server. Open one file and drive. Pre-release, and honest about it
 
 </div>
 
-![Car Game screenshot](docs/screenshot.png)
-
 ---
 
 ## Table of contents
@@ -134,17 +132,24 @@ Press **?** (or `F1`) in the game for the same list.
 
 The game is split into two halves that barely know about each other: the **physics**, which has no screen and no browser code, and the **game around it**, which draws the world and reads your keys.
 
-```mermaid
-flowchart LR
-    A["Keyboard and mouse"] --> B["Game loop"]
-    B --> C["Vehicle physics (fixed 240 Hz steps)"]
-    C --> D["Car state: position, wheels, rpm, gear"]
-    D --> E["Renderer (three.js)"]
-    D --> F["Synthesised sound"]
-    D --> G["Dashboard and effects"]
-    H["Terrain and obstacles"] --> C
-    I["Car data (cars.js)"] --> C
-    J["Handling sliders"] --> C
+```
+ Keyboard and mouse
+         |
+         v
+     Game loop  <---  Handling sliders
+         |
+         v
+ Vehicle physics (fixed 240 Hz steps)  <---  Car data (cars.js)
+         ^                                   Terrain and obstacles
+         |
+         v
+ Car state: position, wheels, rpm, gear
+         |
+   +-----+-----------+
+   |                 |
+   v                 v
+ Renderer        Dashboard, effects
+ (three.js)      and synthesised sound
 ```
 
 ### 1. Physics
@@ -352,7 +357,6 @@ src/              game source
   selftest.js     in-game physics self-test
 tools/            build and test scripts
 vendor/           pinned three.js 0.160.0 used by the build
-docs/             screenshots
 ```
 
 ### Running and building
