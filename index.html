@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Car Game — McLaren F1 GTR · Pre-release</title>
+<meta name="description" content="A browser driving game with a McLaren F1 GTR, tyre smoke, a sky and a handling tuner. Runs from a single index.html. Pre-release.">
+<meta name="theme-color" content="#111316">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23111316'/%3E%3Cpath d='M10 40l6-12c1-2 3-3 5-3h22c2 0 4 1 5 3l6 12v6H10z' fill='%23e8a33d'/%3E%3Ccircle cx='21' cy='46' r='6' fill='%23111316' stroke='%23e8a33d' stroke-width='3'/%3E%3Ccircle cx='43' cy='46' r='6' fill='%23111316' stroke='%23e8a33d' stroke-width='3'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Loading screen: removed by game.js once the car and world are built -->
+<div id="load" role="status" aria-live="polite">
+  <div class="load-card">
+    <div class="brand">CAR&nbsp;GAME</div>
+    <div class="load-sub">McLaren F1 GTR</div>
+    <div class="load-bar"><i></i></div>
+    <div class="load-msg">Unpacking the car and building the world…</div>
+    <div class="tag">Pre-release</div>
+  </div>
+</div>
+
+<!-- Title card: shown once the game is ready, dismissed by a click or any key -->
+<div id="start" role="dialog" aria-label="Start" hidden>
+  <div class="start-card">
+    <div class="tag">Pre-release · v0.1.0</div>
+    <h1>Car&nbsp;Game</h1>
+    <p class="sub">McLaren F1 GTR · sandbox</p>
+    <div class="keys-row">
+      <div><span class="kc"><kbd>W</kbd><kbd>S</kbd></span><em>Gas / brake</em></div>
+      <div><span class="kc"><kbd>A</kbd><kbd>D</kbd></span><em>Steer</em></div>
+      <div><span class="kc"><kbd class="wide">Space</kbd></span><em>Handbrake</em></div>
+      <div><span class="kc"><kbd class="wide">Tab</kbd></span><em>Wheel menu</em></div>
+    </div>
+    <div class="go">Click or press any key to drive</div>
+    <div class="fine"><kbd>?</kbd> shows every control · mouse orbits the camera · <kbd>R</kbd> resets the car</div>
+    <div class="touch-note">This game needs a keyboard and mouse. It will load here, but you won't be able to drive it.</div>
+  </div>
+</div>
+
+<!-- Dashboard -->
+<div id="hud" aria-hidden="true">
+  <div id="car">McLaren F1 GTR</div>
+  <div class="speedrow">
+    <div class="speed"><span id="spd">0</span><small>km/h</small></div>
+    <div class="gear"><span id="gr">N</span><small>gear</small></div>
+  </div>
+  <div id="rbar"><i id="rfill"></i></div>
+  <div class="rrow"><span id="rpm">1000</span><span class="u">rpm</span></div>
+  <div id="chips">
+    <span class="chip" id="c-assist">Assists</span>
+    <span class="chip hot" id="c-air" hidden>Airborne</span>
+    <span class="chip hot" id="c-zero" hidden>0–100</span>
+  </div>
+</div>
+
+<!-- Short messages ("Night on", "Assists off") -->
+<div id="toast" role="status" aria-live="polite"></div>
+
+<!-- Mouse capture hint -->
+<div id="lock" hidden>Click to capture the mouse and orbit the camera</div>
+
+<!-- Persistent corner hint -->
+<div id="corner"><kbd>?</kbd> Controls<span class="ver">Pre-release v0.1.0</span></div>
+
+<!-- Full controls card (toggle with ? or F1) -->
+<div id="help" class="card" hidden>
+  <div class="card-h"><b>Controls</b><span class="tag">Pre-release v0.1.0</span><button type="button" id="help-x" aria-label="Close controls">✕</button></div>
+  <div class="cols">
+    <section>
+      <h3>Drive</h3>
+      <dl>
+        <dt><kbd>W</kbd><kbd>S</kbd></dt><dd>Gas · brake · reverse</dd>
+        <dt><kbd>A</kbd><kbd>D</kbd></dt><dd>Steer</dd>
+        <dt><kbd class="wide">Space</kbd></dt><dd>Handbrake</dd>
+        <dt><kbd>R</kbd></dt><dd>Reset the car</dd>
+        <dt><kbd>T</kbd></dt><dd>Driving assists on / off</dd>
+      </dl>
+      <h3>Camera</h3>
+      <dl>
+        <dt>Mouse</dt><dd>Click to capture, then orbit</dd>
+        <dt><kbd>C</kbd></dt><dd>Look behind (hold)</dd>
+        <dt>Wheel</dt><dd>Zoom</dd>
+        <dt><kbd>[</kbd><kbd>]</kbd></dt><dd>Exposure</dd>
+        <dt><kbd>Esc</kbd></dt><dd>Release the mouse</dd>
+      </dl>
+    </section>
+    <section>
+      <h3>Car &amp; world</h3>
+      <dl>
+        <dt><kbd class="wide">Tab</kbd></dt><dd>Wheel menu (hold) · <kbd>Q</kbd><kbd>E</kbd> tabs · <kbd>1</kbd>–<kbd>8</kbd> pick</dd>
+        <dt><kbd>H</kbd></dt><dd>Headlights</dd>
+        <dt><kbd>N</kbd></dt><dd>Night</dd>
+        <dt><kbd>P</kbd></dt><dd>Look: off · GTA grade · full</dd>
+        <dt><kbd>G</kbd></dt><dd>Glass tint fix</dd>
+        <dt><kbd>L</kbd></dt><dd>Clouds</dd>
+        <dt><kbd>U</kbd></dt><dd>Paint colour</dd>
+        <dt><kbd>M</kbd></dt><dd>Mute</dd>
+      </dl>
+      <h3>Tools</h3>
+      <dl>
+        <dt><kbd>I</kbd></dt><dd>Handling settings</dd>
+        <dt><kbd>J</kbd> <kbd>X</kbd></dt><dd>Smoke settings · quality</dd>
+        <dt><kbd>V</kbd> <kbd>B</kbd></dt><dd>Render view · its angle</dd>
+        <dt><kbd>Y</kbd></dt><dd>Render mode (<kbd>Shift</kbd>+<kbd>Y</kbd> back)</dd>
+        <dt><kbd>F</kbd> <kbd>K</kbd></dt><dd>Frame stats · physics self-test</dd>
+        <dt><kbd>O</kbd></dt><dd>Wheel-arch occluders (debug)</dd>
+      </dl>
+    </section>
+  </div>
+  <div class="card-f">Tip: the orange ramps are on the long strip straight ahead of the start.</div>
+</div>
+
+<div id="errscreen" role="alert"></div>
+
+<!-- Classic scripts only (no import/fetch of local files) so this runs straight from file://. -->
+<script src="js/boot.js"></script>
+<script src="assets/F1GTR.js"></script>
+<script src="game.js?v=0.1.0"></script>
+</body>
+</html>

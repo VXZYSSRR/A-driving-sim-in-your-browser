@@ -1,0 +1,10 @@
+{
+  "name": "car-game",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "build": "bash tools/build.sh",
+    "test": "node tools/run-physics-tests.mjs"
+  },
+  "description": "Browser driving sandbox with a McLaren F1 GTR (pre-release)"
+}
