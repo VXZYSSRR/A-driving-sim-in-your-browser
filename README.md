@@ -396,12 +396,10 @@ Ideas on driving modes, physics realism and what a good damage system should be 
 
 ## License and credits
 
-<!-- Choose a license and add a LICENSE file, for example MIT. -->
-
-Add your license here. Until a `LICENSE` file is added, all rights are reserved by the author.
+The source code of this project is released under the [MIT License](LICENSE). The MIT License covers the original code only. It does not cover the third-party items listed below, which keep their own licences.
 
 * **three.js** is bundled into `game.js` and is MIT licensed. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
-* **The car model** (`assets/F1GTR.js`): its author and licence still need to be recorded in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) before wider distribution.
+* **The car model** (`assets/F1GTR.js`) is **not** covered by the MIT License. Its author and licence still need to be recorded in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) before wider distribution.
 * McLaren and F1 GTR are names of their respective owners. This project is not affiliated with or endorsed by McLaren.
 
 ---
